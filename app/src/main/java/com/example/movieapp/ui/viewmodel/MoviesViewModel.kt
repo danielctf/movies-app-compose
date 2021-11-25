@@ -2,6 +2,7 @@ package com.example.movieapp.ui.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.domain.entity.Movie
@@ -9,6 +10,7 @@ import com.example.movieapp.domain.entity.MovieType
 import com.example.movieapp.domain.entity.Result
 import com.example.movieapp.domain.usecase.GetMoviesUseCase
 import com.example.movieapp.domain.usecase.RefreshMoviesUseCase
+import com.example.movieapp.ui.view.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -18,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getMoviesUseCase: GetMoviesUseCase,
     private val refreshMoviesUseCase: RefreshMoviesUseCase
 ) : ViewModel() {
@@ -36,9 +39,12 @@ class MoviesViewModel @Inject constructor(
     private val _goToMovieDetail = MutableSharedFlow<Movie>()
     val goToMovieDetail = _goToMovieDetail.asSharedFlow()
 
-    fun onViewCreated(type: MovieType) {
-        loadMovies(type)
-        refreshMovies(type)
+    init {
+        savedStateHandle.get<String>(Navigation.Movies.TYPE)?.let {
+            val type = MovieType.valueOf(it)
+            loadMovies(type)
+            refreshMovies(type)
+        }
     }
 
     private fun loadMovies(type: MovieType) {

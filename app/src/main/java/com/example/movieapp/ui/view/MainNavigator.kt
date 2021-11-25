@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.domain.entity.Movie
-import com.example.movieapp.domain.entity.MovieType
 import com.example.movieapp.domain.utils.fromJson
 import com.example.movieapp.domain.utils.toJson
 import com.example.movieapp.ui.view.menu.Menu
@@ -31,21 +30,20 @@ private fun NavGraphBuilder.addMenu(navController: NavController) {
 }
 
 private fun NavGraphBuilder.addMovies(navController: NavController) {
-    composable("${Navigation.Movies.route}/{type}") { backStackEntry ->
-        backStackEntry.arguments?.getString("type")?.let { type ->
-            Movies(
-                type = MovieType.valueOf(type),
-                goToMovieDetail = {
-                    navController.navigate("${Navigation.MovieDetail.route}${it.toJson()}")
-                }
-            )
-        }
+    val movies = Navigation.Movies
+    composable("${movies.route}/{${movies.TYPE}}") {
+        Movies(
+            goToMovieDetail = {
+                navController.navigate("${Navigation.MovieDetail.route}${it.toJson()}")
+            }
+        )
     }
 }
 
 private fun NavGraphBuilder.addMovieDetail() {
-    composable("${Navigation.MovieDetail.route}{movie}") { backStackEntry ->
-        backStackEntry.arguments?.getString("movie")?.let { movie ->
+    val movieDetail = Navigation.MovieDetail
+    composable("${movieDetail.route}{${movieDetail.MOVIE}}") { backStackEntry ->
+        backStackEntry.arguments?.getString(movieDetail.MOVIE)?.let { movie ->
             movie.fromJson<Movie>()?.let {
                 MovieDetail(movie = it)
             }

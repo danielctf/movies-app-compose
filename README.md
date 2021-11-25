@@ -10,3 +10,8 @@
 * Retrofit & Moshi
 * MockK
 * Coil
+
+## Usage
+Get your API key from https://www.themoviedb.org/documentation/api and add it to your `local.properties`;
+
+`api_key=your-key`

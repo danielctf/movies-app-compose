@@ -21,16 +21,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.movieapp.R
 import com.example.movieapp.domain.entity.Movie
-import com.example.movieapp.domain.entity.MovieType
 import com.example.movieapp.ui.viewmodel.MoviesViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun Movies(type: MovieType, goToMovieDetail: (Movie) -> Unit) {
+fun Movies(goToMovieDetail: (Movie) -> Unit) {
     val viewModel: MoviesViewModel = hiltViewModel()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.onViewCreated(type)
         viewModel.goToMovieDetail.collectLatest { goToMovieDetail(it) }
     }
 
@@ -52,12 +50,8 @@ fun ErrorDialog(show: Boolean, onConfirmedClicked: () -> Unit) {
     if (show) {
         AlertDialog(
             onDismissRequest = onConfirmedClicked,
-            title = {
-                Text(text = stringResource(id = R.string.error))
-            },
-            text = {
-                Text(text = stringResource(id = R.string.error_message))
-            },
+            title = { Text(text = stringResource(id = R.string.error)) },
+            text = { Text(text = stringResource(id = R.string.error_message)) },
             confirmButton = {
                 Button(onClick = onConfirmedClicked) {
                     Text(text = stringResource(id = R.string.ok))
@@ -95,9 +89,7 @@ fun SearchBar(
         value = searchText,
         onValueChange = onSearchTextChanged,
         modifier = Modifier.fillMaxWidth(),
-        leadingIcon = {
-            Icon(imageVector = Icons.Default.Search, contentDescription = null)
-        },
+        leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() })
     )

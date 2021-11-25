@@ -54,7 +54,11 @@ fun MovieItemImage(imageUrl: String, size: Dp) {
 
 @Composable
 fun MovieItemTitle(title: String, textAlign: TextAlign = TextAlign.Left) {
-    Text(text = title, style = TextStyle(fontSize = bigText), textAlign = textAlign)
+    Text(
+        text = title,
+        style = TextStyle(fontSize = bigText),
+        textAlign = textAlign
+    )
 }
 
 @Composable

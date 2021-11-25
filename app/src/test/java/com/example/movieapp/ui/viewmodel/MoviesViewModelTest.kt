@@ -1,10 +1,12 @@
 package com.example.movieapp.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import com.example.movieapp.domain.entity.Movie
 import com.example.movieapp.domain.entity.MovieType
 import com.example.movieapp.domain.entity.Result
 import com.example.movieapp.domain.usecase.GetMoviesUseCase
 import com.example.movieapp.domain.usecase.RefreshMoviesUseCase
+import com.example.movieapp.ui.view.Navigation
 import com.example.movieapp.utils.MainCoroutineRule
 import com.example.movieapp.utils.MockkTest
 import com.example.movieapp.utils.newMoviesList
@@ -29,38 +31,43 @@ class MoviesViewModelTest : MockkTest() {
     val coroutineRule = MainCoroutineRule()
 
     @MockK
+    private lateinit var savedStateHandle: SavedStateHandle
+    @MockK
     private lateinit var getMoviesUseCase: GetMoviesUseCase
     @MockK
     private lateinit var refreshMoviesUseCase: RefreshMoviesUseCase
-    private lateinit var viewModel: MoviesViewModel
+
+    private val type = MovieType.TOP_RATED
+    private val moviesList = newMoviesList()
 
     @Before
     fun setUp() {
-        viewModel = MoviesViewModel(getMoviesUseCase, refreshMoviesUseCase)
+        every { getMoviesUseCase(type) } returns flowOf(moviesList)
+        coEvery { refreshMoviesUseCase(type) } returns Result.Success(Unit)
+        every {
+            savedStateHandle.get<String>(Navigation.Movies.TYPE)
+        } returns MovieType.TOP_RATED.toString()
     }
 
     @Test
-    fun onViewCreated_loadMovies() {
-        // Arrange
-        val type = MovieType.TOP_RATED
-        val moviesList = newMoviesList()
-        every { getMoviesUseCase(type) } returns flowOf(moviesList)
-
+    fun onInit_loadMovies() {
         // Act
-        viewModel.onViewCreated(type)
+        val viewModel = newViewModel()
 
         // Assert
         assertEquals(moviesList, viewModel.filteredMoviesList.value)
     }
 
-    @Test
-    fun onViewCreated_refreshMovies() {
-        // Arrange
-        val type = MovieType.TOP_RATED
-        coEvery { refreshMoviesUseCase(type) } returns Result.Success(Unit)
+    private fun newViewModel() = MoviesViewModel(
+        savedStateHandle,
+        getMoviesUseCase,
+        refreshMoviesUseCase
+    )
 
+    @Test
+    fun onInit_refreshMovies() {
         // Act
-        viewModel.onViewCreated(type)
+        newViewModel()
 
         // Assert
         coVerify { refreshMoviesUseCase(type) }
@@ -69,11 +76,10 @@ class MoviesViewModelTest : MockkTest() {
     @Test
     fun onRefreshMoviesError_showError() {
         // Arrange
-        val type = MovieType.TOP_RATED
         coEvery { refreshMoviesUseCase(type) } returns Result.Error(Exception())
 
         // Act
-        viewModel.onViewCreated(type)
+        val viewModel = newViewModel()
 
         // Assert
         assertEquals(true, viewModel.showError.value)
@@ -82,9 +88,8 @@ class MoviesViewModelTest : MockkTest() {
     @Test
     fun onErrorConfirmed_hideError() {
         // Arrange
-        val type = MovieType.TOP_RATED
         coEvery { refreshMoviesUseCase(type) } returns Result.Error(Exception())
-        viewModel.onViewCreated(type)
+        val viewModel = newViewModel()
 
         // Act
         viewModel.onErrorConfirmed()
@@ -96,11 +101,7 @@ class MoviesViewModelTest : MockkTest() {
     @Test
     fun onSearchTextChanged_filterMovies() {
         // Arrange
-        val type = MovieType.TOP_RATED
-        val moviesList = newMoviesList()
-        every { getMoviesUseCase(type) } returns flowOf(moviesList)
-        coEvery { refreshMoviesUseCase(type) } returns Result.Error(Exception())
-        viewModel.onViewCreated(type)
+        val viewModel = newViewModel()
 
         // Act
         viewModel.onSearchTextChanged(moviesList.first().title.uppercase())
@@ -112,15 +113,15 @@ class MoviesViewModelTest : MockkTest() {
     @Test
     fun onMovieClicked_goToMovieDetail() = runBlockingTest {
         // Arrange
-        val movie = newMoviesList().first()
+        val viewModel = newViewModel()
         val eventsList = mutableListOf<Movie>()
 
         // Act
         val job = launch { viewModel.goToMovieDetail.toCollection(eventsList) }
-        viewModel.onMovieClicked(movie)
+        viewModel.onMovieClicked(moviesList.last())
         job.cancel()
 
         // Assert
-        assertEquals(listOf(movie), eventsList)
+        assertEquals(listOf(moviesList.last()), eventsList)
     }
 }
