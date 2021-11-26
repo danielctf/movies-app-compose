@@ -11,14 +11,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.movieapp.domain.entity.Movie
+import com.example.movieapp.ui.entity.MovieDetailState
 import com.example.movieapp.ui.theme.imageSize
 import com.example.movieapp.ui.theme.regularMargin
 import com.example.movieapp.ui.theme.regularText
 import com.example.movieapp.ui.view.movie.*
+import com.example.movieapp.ui.viewmodel.MovieDetailViewModel
 
 @Composable
-fun MovieDetail(movie: Movie) {
+fun MovieDetail() {
+    val viewModel: MovieDetailViewModel = hiltViewModel()
+    val state = viewModel.state.value
+    if (state is MovieDetailState.Content) {
+        MovieDetailContent(movie = state.movie)
+    }
+}
+
+@Composable
+fun MovieDetailContent(movie: Movie) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,6 +59,6 @@ fun OverView(text: String) {
 
 @Preview
 @Composable
-fun MovieDetailPreview() {
-    MovieDetail(movie = newMovie())
+fun MovieDetailContentPreview() {
+    MovieDetailContent(movie = newMovie())
 }

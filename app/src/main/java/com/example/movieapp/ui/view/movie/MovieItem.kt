@@ -23,13 +23,13 @@ import com.example.movieapp.ui.theme.*
 @Composable
 fun MovieItem(
     movie: Movie,
-    onMovieClicked: (Movie) -> Unit
+    onMovieClicked: (String) -> Unit
 ) {
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onMovieClicked(movie) }
+                .clickable { onMovieClicked(movie.uid) }
                 .padding(horizontal = smallMargin, vertical = regularMargin)
         ) {
             MovieItemImage(imageUrl = movie.thumbnailImageUrl, size = thumbnailSize)

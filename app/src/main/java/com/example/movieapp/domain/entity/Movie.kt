@@ -1,6 +1,7 @@
 package com.example.movieapp.domain.entity
 
 data class Movie(
+    val uid: String,
     val overview: String,
     val title: String,
     val releaseDate: String,

@@ -9,4 +9,5 @@ interface MovieRepository {
 
     fun getMoviesList(type: MovieType): Flow<List<Movie>>
     suspend fun refreshMovies(type: MovieType): Result<Unit>
+    suspend fun getMovie(uid: String): Movie
 }

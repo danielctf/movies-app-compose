@@ -34,9 +34,11 @@ class MovieRepositoryImpl @Inject constructor(
             MovieType.NONE -> null
         }
 
-    private fun saveMoviesList(list: List<DataMovie>, type: MovieType): Result<Unit> {
+    private suspend fun saveMoviesList(list: List<DataMovie>, type: MovieType): Result<Unit> {
         local.delete(type)
         local.insert(list)
         return Result.Success(Unit)
     }
+
+    override suspend fun getMovie(uid: String): Movie = local.getMovie(uid).toDomain()
 }

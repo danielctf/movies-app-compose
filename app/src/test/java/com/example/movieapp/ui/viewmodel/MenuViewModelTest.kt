@@ -45,29 +45,29 @@ class MenuViewModelTest {
     fun onTopRatedMovieTypeClicked_goToTopRatedMovies() = runBlockingTest {
         // Arrange
         val type = MovieType.TOP_RATED
-        val eventsList = mutableListOf<MovieType>()
+        val effectsList = mutableListOf<MovieType>()
 
         // Act
-        val job = launch { viewModel.goToMovies.toCollection(eventsList) }
+        val job = launch { viewModel.goToMovies.toCollection(effectsList) }
         viewModel.onMovieTypeClicked(type)
         job.cancel()
 
         // Assert
-        assertEquals(listOf(type), eventsList)
+        assertEquals(listOf(type), effectsList)
     }
 
     @Test
     fun onPopularMovieTypeClicked_goToPopularMovies() = runBlockingTest {
         // Arrange
         val type = MovieType.POPULAR
-        val eventsList = mutableListOf<MovieType>()
+        val effectsList = mutableListOf<MovieType>()
 
         // Act
-        val job = launch { viewModel.goToMovies.toCollection(eventsList) }
+        val job = launch { viewModel.goToMovies.toCollection(effectsList) }
         viewModel.onMovieTypeClicked(type)
         job.cancel()
 
         // Assert
-        assertEquals(listOf(type), eventsList)
+        assertEquals(listOf(type), effectsList)
     }
 }

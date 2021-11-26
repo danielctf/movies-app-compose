@@ -6,9 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.movieapp.domain.entity.Movie
-import com.example.movieapp.domain.utils.fromJson
-import com.example.movieapp.domain.utils.toJson
 import com.example.movieapp.ui.view.menu.Menu
 import com.example.movieapp.ui.view.movie.Movies
 import com.example.movieapp.ui.view.moviedetail.MovieDetail
@@ -34,7 +31,7 @@ private fun NavGraphBuilder.addMovies(navController: NavController) {
     composable("${movies.route}/{${movies.TYPE}}") {
         Movies(
             goToMovieDetail = {
-                navController.navigate("${Navigation.MovieDetail.route}${it.toJson()}")
+                navController.navigate("${Navigation.MovieDetail.route}/$it")
             }
         )
     }
@@ -42,11 +39,7 @@ private fun NavGraphBuilder.addMovies(navController: NavController) {
 
 private fun NavGraphBuilder.addMovieDetail() {
     val movieDetail = Navigation.MovieDetail
-    composable("${movieDetail.route}{${movieDetail.MOVIE}}") { backStackEntry ->
-        backStackEntry.arguments?.getString(movieDetail.MOVIE)?.let { movie ->
-            movie.fromJson<Movie>()?.let {
-                MovieDetail(movie = it)
-            }
-        }
+    composable("${movieDetail.route}/{${movieDetail.MOVIE}}") {
+        MovieDetail()
     }
 }

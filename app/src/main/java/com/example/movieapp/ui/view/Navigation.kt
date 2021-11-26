@@ -5,7 +5,7 @@ sealed class Navigation(val route: String) {
     object Movies : Navigation("movies") {
         const val TYPE = "type"
     }
-    object MovieDetail : Navigation("movie-detail?movie=") {
+    object MovieDetail : Navigation("movie-detail") {
         const val MOVIE = "movie"
     }
 }

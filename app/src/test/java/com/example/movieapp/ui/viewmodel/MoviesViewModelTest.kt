@@ -1,7 +1,6 @@
 package com.example.movieapp.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import com.example.movieapp.domain.entity.Movie
 import com.example.movieapp.domain.entity.MovieType
 import com.example.movieapp.domain.entity.Result
 import com.example.movieapp.domain.usecase.GetMoviesUseCase
@@ -114,14 +113,15 @@ class MoviesViewModelTest : MockkTest() {
     fun onMovieClicked_goToMovieDetail() = runBlockingTest {
         // Arrange
         val viewModel = newViewModel()
-        val eventsList = mutableListOf<Movie>()
+        val effectsList = mutableListOf<String>()
+        val uid = moviesList.last().uid
 
         // Act
-        val job = launch { viewModel.goToMovieDetail.toCollection(eventsList) }
-        viewModel.onMovieClicked(moviesList.last())
+        val job = launch { viewModel.goToMovieDetail.toCollection(effectsList) }
+        viewModel.onMovieClicked(uid)
         job.cancel()
 
         // Assert
-        assertEquals(listOf(moviesList.last()), eventsList)
+        assertEquals(listOf(uid), effectsList)
     }
 }

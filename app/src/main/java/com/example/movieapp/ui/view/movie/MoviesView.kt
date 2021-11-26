@@ -25,7 +25,7 @@ import com.example.movieapp.ui.viewmodel.MoviesViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun Movies(goToMovieDetail: (Movie) -> Unit) {
+fun Movies(goToMovieDetail: (String) -> Unit) {
     val viewModel: MoviesViewModel = hiltViewModel()
 
     LaunchedEffect(key1 = Unit) {
@@ -64,7 +64,7 @@ fun ErrorDialog(show: Boolean, onConfirmedClicked: () -> Unit) {
 @Composable
 fun MoviesContent(
     moviesList: List<Movie>,
-    onMovieClicked: (Movie) -> Unit,
+    onMovieClicked: (String) -> Unit,
     searchText: String,
     onSearchTextChanged: (String) -> Unit
 ) {

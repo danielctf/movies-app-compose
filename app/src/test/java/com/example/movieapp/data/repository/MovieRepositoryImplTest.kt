@@ -58,7 +58,7 @@ class MovieRepositoryImplTest : MockkTest() {
         val result = repository.refreshMovies(type)
 
         // Assert
-        verifyOrder {
+        coVerifyOrder {
             local.delete(type)
             local.insert(moviesList)
         }
@@ -90,7 +90,7 @@ class MovieRepositoryImplTest : MockkTest() {
         val result = repository.refreshMovies(type)
 
         // Assert
-        verifyOrder {
+        coVerifyOrder {
             local.delete(type)
             local.insert(moviesList)
         }
@@ -108,5 +108,18 @@ class MovieRepositoryImplTest : MockkTest() {
             remote wasNot Called
         }
         assertTrue(result is Result.Error)
+    }
+
+    @Test
+    fun onGetMovie_returnMovie() = runBlockingTest {
+        // Arrange
+        val dataMovie = newDataMoviesList(MovieType.NONE).first()
+        coEvery { local.getMovie(dataMovie.uid) } returns dataMovie
+
+        // Act
+        val movie = repository.getMovie(dataMovie.uid)
+
+        // Assert
+        assertEquals(dataMovie.toDomain(), movie)
     }
 }

@@ -36,7 +36,7 @@ class MoviesViewModel @Inject constructor(
     private val _showError = mutableStateOf(false)
     val showError: State<Boolean> = _showError
 
-    private val _goToMovieDetail = MutableSharedFlow<Movie>()
+    private val _goToMovieDetail = MutableSharedFlow<String>()
     val goToMovieDetail = _goToMovieDetail.asSharedFlow()
 
     init {
@@ -76,9 +76,9 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun onMovieClicked(movie: Movie) {
+    fun onMovieClicked(uid: String) {
         viewModelScope.launch {
-            _goToMovieDetail.emit(movie)
+            _goToMovieDetail.emit(uid)
         }
     }
 
