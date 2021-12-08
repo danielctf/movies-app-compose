@@ -1,4 +1,4 @@
-package com.example.movieapp.ui.entity
+package com.example.movieapp.ui.entity.moviedetail
 
 import com.example.movieapp.domain.entity.Movie
 

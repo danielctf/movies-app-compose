@@ -27,7 +27,7 @@ class GetMoviesUseCaseTest : MockkTest() {
     }
 
     @Test
-    fun onInvoke_getMoviesList() = runBlockingTest {
+    fun onInvoke_returnMoviesList() = runBlockingTest {
         // Arrange
         val type = MovieType.TOP_RATED
         val moviesList = newMoviesList()

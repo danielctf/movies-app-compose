@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.movieapp.domain.entity.MovieType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.util.UUID
+import java.util.*
 
 @Entity
 @JsonClass(generateAdapter = true)

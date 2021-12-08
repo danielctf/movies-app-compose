@@ -1,4 +1,4 @@
-package com.example.movieapp.ui.view.movie
+package com.example.movieapp.ui.view.movies
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,16 +18,16 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.movieapp.R
 import com.example.movieapp.domain.entity.Movie
-import com.example.movieapp.ui.viewmodel.MoviesViewModel
+import com.example.movieapp.ui.viewmodel.movies.MoviesViewModelDelegate
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun Movies(goToMovieDetail: (String) -> Unit) {
-    val viewModel: MoviesViewModel = hiltViewModel()
-
+fun Movies(
+    viewModel: MoviesViewModelDelegate,
+    goToMovieDetail: (String) -> Unit
+) {
     LaunchedEffect(key1 = Unit) {
         viewModel.goToMovieDetail.collectLatest { goToMovieDetail(it) }
     }

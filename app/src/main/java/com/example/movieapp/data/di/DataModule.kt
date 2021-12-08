@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.example.movieapp.data.MovieDatabase
 import com.example.movieapp.data.datasource.dao.MovieDao
 import com.example.movieapp.data.datasource.service.MovieService
+import com.example.movieapp.domain.di.IoDispatcher
+import com.example.movieapp.domain.di.MainDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,6 +44,11 @@ class DataModule {
     @Provides
     fun providesMovieDao(db: MovieDatabase): MovieDao = db.movieDao()
 
+    @MainDispatcher
     @Provides
-    fun providesCoroutineDispatchers(): CoroutineDispatcher = Dispatchers.IO
+    fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+
+    @IoDispatcher
+    @Provides
+    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 }

@@ -2,7 +2,7 @@ package com.example.movieapp.utils
 
 import com.example.movieapp.data.entity.DataMovie
 import com.example.movieapp.data.entity.DataMovieResponse
-import com.example.movieapp.data.mapper.toDomain
+import com.example.movieapp.domain.entity.Movie
 import com.example.movieapp.domain.entity.MovieType
 
 fun newDataMoviesList(type: MovieType) = listOf(
@@ -26,4 +26,13 @@ fun newDataMoviesList(type: MovieType) = listOf(
 
 fun newDataMovieResponse(type: MovieType) = DataMovieResponse(newDataMoviesList(type))
 
-fun newMoviesList() = newDataMoviesList(MovieType.NONE).toDomain()
+fun newMovie(title: String = "title") = Movie(
+    uid = "uid",
+    overview = "overview",
+    title = title,
+    releaseDate = "releaseDate",
+    averageVote = 12.5,
+    posterPath = "posterPath"
+)
+
+fun newMoviesList() = listOf(newMovie(title = "title 1"), newMovie(title = "title 2"))

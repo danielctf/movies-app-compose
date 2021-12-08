@@ -13,12 +13,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.movieapp.domain.entity.Movie
-import com.example.movieapp.ui.entity.MovieDetailState
+import com.example.movieapp.ui.entity.moviedetail.MovieDetailState
 import com.example.movieapp.ui.theme.imageSize
 import com.example.movieapp.ui.theme.regularMargin
 import com.example.movieapp.ui.theme.regularText
-import com.example.movieapp.ui.view.movie.*
-import com.example.movieapp.ui.viewmodel.MovieDetailViewModel
+import com.example.movieapp.ui.view.movies.*
+import com.example.movieapp.ui.viewmodel.moviedetail.MovieDetailViewModel
 
 @Composable
 fun MovieDetail() {

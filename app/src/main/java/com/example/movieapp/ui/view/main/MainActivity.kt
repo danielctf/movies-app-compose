@@ -1,4 +1,4 @@
-package com.example.movieapp.ui.view
+package com.example.movieapp.ui.view.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MovieAppTheme {
-                MainNavigator()
+                MainView()
             }
         }
     }
