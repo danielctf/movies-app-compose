@@ -37,8 +37,7 @@ private fun NavGraphBuilder.addPopularMovies(navController: NavController) {
 }
 
 private fun NavGraphBuilder.addMovieDetail() {
-    val movieDetail = Navigation.MovieDetail
-    composable("${movieDetail.route}/{${Navigation.MovieDetail.MOVIE}}") {
+    composable("${Navigation.MovieDetail.route}/{${Navigation.MovieDetail.MOVIE}}") {
         MovieDetail()
     }
 }
